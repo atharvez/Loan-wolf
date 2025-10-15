@@ -22,8 +22,12 @@ import type { AnalysisResult } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 
 const formSchema = z.object({
+  loanType: z.enum(['personal', 'home', 'business', 'education', 'auto'], {
+    required_error: 'You need to select a loan type.',
+  }),
   income: z.coerce.number().positive({ message: 'Annual income must be a positive number.' }),
   debt: z.coerce.number().nonnegative({ message: 'Total monthly debt cannot be negative.' }),
   creditScore: z.coerce.number().min(300, { message: 'Credit score must be at least 300.' }).max(850, { message: 'Credit score cannot exceed 850.' }),
@@ -111,7 +115,66 @@ export function LoanApplicationForm({ onAnalysisComplete, onAnalysisStart, onAna
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="loanType"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>What type of loan are you applying for?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="grid grid-cols-2 md:grid-cols-3 gap-4"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="personal" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Personal Loan
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="home" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Home Loan
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="business" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Business Loan
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="education" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Education Loan
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="auto" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Auto Loan
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <FormField
                 control={form.control}
