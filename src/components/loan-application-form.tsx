@@ -20,12 +20,17 @@ import { Loader2 } from 'lucide-react';
 import { handleApplicationSubmit } from '@/app/actions';
 import type { AnalysisResult } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
+import { Checkbox } from '@/components/ui/checkbox';
+import Link from 'next/link';
 
 const formSchema = z.object({
   income: z.coerce.number().positive({ message: 'Annual income must be a positive number.' }),
   debt: z.coerce.number().nonnegative({ message: 'Total monthly debt cannot be negative.' }),
   creditScore: z.coerce.number().min(300, { message: 'Credit score must be at least 300.' }).max(850, { message: 'Credit score cannot exceed 850.' }),
   document: z.any().optional(),
+  agreeToTerms: z.boolean().refine(val => val === true, {
+    message: "You must agree to the terms and conditions.",
+  }),
 });
 
 type LoanApplicationFormProps = {
@@ -44,6 +49,7 @@ export function LoanApplicationForm({ onAnalysisComplete, onAnalysisStart, onAna
       income: 50000,
       debt: 500,
       creditScore: 650,
+      agreeToTerms: false,
     },
   });
 
@@ -98,10 +104,10 @@ export function LoanApplicationForm({ onAnalysisComplete, onAnalysisStart, onAna
   }
 
   return (
-    <Card className="w-full max-w-2xl shadow-md">
+    <Card className="w-full max-w-4xl shadow-lg border-2 border-primary/20">
       <CardHeader>
-        <CardTitle className="font-headline text-2xl">Loan Application</CardTitle>
-        <CardDescription>Enter your financial details to get started.</CardDescription>
+        <CardTitle className="font-headline text-3xl">Loan Application Analysis</CardTitle>
+        <CardDescription>Enter your financial details to get an instant analysis and personalized feedback.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -168,6 +174,35 @@ export function LoanApplicationForm({ onAnalysisComplete, onAnalysisStart, onAna
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="agreeToTerms"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>
+                      Agree to terms and conditions
+                    </FormLabel>
+                    <FormDescription>
+                      You agree to let our AI analyze your financial data. 
+                      Read our{' '}
+                      <Link href="#" className="underline hover:text-primary">
+                        terms of service
+                      </Link>
+                      .
+                    </FormDescription>
+                     <FormMessage />
+                  </div>
+                </FormItem>
+              )}
+            />
+
             <Button type="submit" disabled={isLoading} className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6">
               {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Analyze Application
