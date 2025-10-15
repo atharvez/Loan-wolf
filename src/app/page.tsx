@@ -2,15 +2,16 @@
 
 import { useState } from 'react';
 import { LoanApplicationForm } from '@/components/loan-application-form';
-import type { AnalysisResult } from '@/lib/types';
+import type { AnalysisResult, AgreementAnalysisResult } from '@/lib/types';
 import { LoanScoreDisplay } from '@/components/loan-score-display';
 import { FraudDetectionResult } from '@/components/fraud-detection-result';
 import { CorrectiveSuggestions } from '@/components/corrective-suggestions';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Logo } from '@/components/logo';
-import { Map } from 'lucide-react';
+import { Map, FileScan } from 'lucide-react';
 import { BankMap } from '@/components/bank-map';
 import Image from 'next/image';
+import { LoanAgreementAnalyzer } from '@/components/loan-agreement-analyzer';
 
 function ResultsSkeleton() {
   return (
@@ -90,6 +91,15 @@ export default function Home() {
             )}
           </div>
         )}
+
+        <section id="agreement-analyzer-section" className="w-full max-w-4xl space-y-8 text-center">
+          <FileScan className="h-12 w-12 mx-auto text-primary" />
+          <h2 className="text-4xl font-headline font-bold mt-4">Analyze Your Loan Agreement</h2>
+          <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
+            Already have a loan offer? Upload the agreement PDF to let our AI scan for high-risk clauses and ambiguous terms before you sign.
+          </p>
+          <LoanAgreementAnalyzer />
+        </section>
         
         <section id="map-section" className="w-full max-w-6xl space-y-8">
             <div className="text-center">

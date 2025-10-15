@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { detectInconsistentFinancialClaims } from '@/ai/flows/inconsistent-financial-claims-detection';
 import { detectFraudulentDocument } from '@/ai/flows/fraudulent-document-detection';
 import { getPersonalizedCorrectiveSuggestions } from '@/ai/flows/personalized-corrective-suggestions';
+import { analyzeLoanAgreement, type AnalyzeLoanAgreementOutput } from '@/ai/flows/loan-agreement-analysis';
+
 import type { AnalysisResult } from '@/lib/types';
 
 const ApplicationSchema = z.object({
@@ -12,6 +14,11 @@ const ApplicationSchema = z.object({
   creditScore: z.number(),
   document: z.string().optional(), // data URI
 });
+
+const AgreementSchema = z.object({
+    document: z.string(), // data URI
+});
+
 
 export async function handleApplicationSubmit(
   formData: z.infer<typeof ApplicationSchema>
@@ -83,4 +90,32 @@ export async function handleApplicationSubmit(
     fraud: fraudResult,
     suggestions,
   };
+}
+
+
+export async function handleAgreementAnalysis(
+    formData: z.infer<typeof AgreementSchema>
+): Promise<AnalyzeLoanAgreementOutput> {
+    const validation = AgreementSchema.safeParse(formData);
+    if (!validation.success) {
+        throw new Error('Invalid form data.');
+    }
+
+    const { document } = validation.data;
+
+    // For now, we are passing the data URI directly to the GenAI flow.
+    // In a real application, you would extract text from the PDF on the server.
+    // This is a placeholder for that logic.
+    // Let's pretend the data URI is the text for demo purposes.
+    const fakeText = "This is a sample loan agreement text extracted from the uploaded PDF. It includes clauses about interest rates, late payment penalties, and other terms. The interest rate is 5% and there is a $50 late fee.";
+    
+    try {
+        const analysis = await analyzeLoanAgreement({
+        agreementText: fakeText, // Pass the extracted text here.
+        });
+        return analysis;
+    } catch (error) {
+        console.error('Error analyzing loan agreement:', error);
+        throw new Error('Failed to analyze the loan agreement.');
+    }
 }
