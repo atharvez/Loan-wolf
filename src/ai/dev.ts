@@ -1,1 +1,6 @@
-// Flows will be imported for their side effects in this file.
+import { config } from 'dotenv';
+config();
+
+import '@/ai/flows/inconsistent-financial-claims-detection.ts';
+import '@/ai/flows/fraudulent-document-detection.ts';
+import '@/ai/flows/personalized-corrective-suggestions.ts';
