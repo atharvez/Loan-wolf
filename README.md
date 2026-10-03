@@ -1,4 +1,4 @@
-﻿# Loan Wolf ðŸºðŸ’°
+# Loan Wolf
 
 A smart personal loan management and tracking application built with Next.js.
 
@@ -17,11 +17,11 @@ Loan Wolf helps you take control of your debt. Track multiple loans, visualize p
 
 ## Features
 
-- ðŸ“‹ **Loan Dashboard** â€” Overview of all active loans with key metrics
-- ðŸ“ˆ **Payoff Timeline** â€” Visual amortization schedule
-- ðŸ”„ **Strategy Comparison** â€” Snowball vs Avalanche vs custom
-- ðŸ”” **Due Date Alerts** â€” Never miss a payment
-- ðŸ’¡ **Savings Calculator** â€” See how extra payments accelerate payoff
+- Loan dashboard -- overview of all active loans with key metrics
+- Payoff timeline -- visual amortization schedule
+- Strategy comparison -- Snowball vs Avalanche vs custom
+- Due date alerts -- never miss a payment
+- Savings calculator -- see how extra payments accelerate payoff
 
 ## Getting Started
 
@@ -34,4 +34,4 @@ npm run dev
 
 ## License
 
-MIT Â© [Atharva Desai](https://github.com/atharvez)
+MIT (c) Atharva Desai
